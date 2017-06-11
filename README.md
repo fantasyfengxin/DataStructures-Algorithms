@@ -1,2 +1,2 @@
 # DataStructures-Algorithms
-Some common data structures and algorithms implemented in python.
+Simple data structures and algorithms for practice.
