@@ -9,38 +9,36 @@ class Node:
 
 
 class BST:
-	"""Simple binary search tree implementation."""
+	"""A class for binary search tree."""
 	def __init__(self):
 		self.root = None
 
 	def inorder_traverse(self):
-		"""inorder traverse of the tree"""
+		"""Inorder traverse of the tree."""
 		traversed_values = []
 		self.inorder_traverse_helper(self.root, traversed_values)
 		return traversed_values
 
 	def inorder_traverse_helper(self, curr_node, traversed_values):
-		"""a helper function to do real traverse."""
+		"""A helper function to do real traverse."""
 		if curr_node:
 			self.inorder_traverse_helper(curr_node.left_child, traversed_values)
 			traversed_values.append(curr_node.value)
 			self.inorder_traverse_helper(curr_node.right_child, traversed_values)
 
 	def inorder_traverse_gen(self, curr_node='start'):
-		"""inorder traverse generator."""
+		"""Inorder traverse using generator."""
 		if curr_node == 'start':
 			curr_node = self.root
 		if curr_node:
 			if curr_node.left_child:
 				yield from self.inorder_traverse_gen(curr_node.left_child)
-
 			yield curr_node.value
-
 			if curr_node.right_child:
 				yield from self.inorder_traverse_gen(curr_node.right_child)
 
 	def search(self, value):
-		"""search value in the tree"""
+		"""Search value in the tree."""
 		curr_node = self.root
 		while True:
 			if not curr_node:
@@ -54,30 +52,37 @@ class BST:
 		return False
 
 	def maximum(self):
-		"""return maximum value of the tree"""
+		"""Return node of maximum value."""
 		if self.root:
 			curr_node = self.root
 			while curr_node:
 				curr_node = curr_node.right_child
-			return curr_node.value
+			return curr_node
+		else:
+			return None
 
 	def minimum(self):
-		"""return minimum value of the tree."""
+		"""Return node of minimum value."""
 		if self.root:
 			curr_node = self.root
 			while curr_node:
 				curr_node = curr_node.left_child
-			return curr_node.value
+			return curr_node
+		else:
+			return None
 
 	def successor(self, node):
-		"""return the successor of node in the tree."""
+		"""Return the successor of node."""
+		# If node has right child, return the 'left most' node of right subtree.
 		if node.right_child:
 			curr_node = node.right_child
 			while curr_node.left_child:
 				curr_node = curr_node.left_child
 			return curr_node
-		traversed = [(self.root, None)]
+		# Traversing the tree to find successor if node does not have right child.
+		traversed = [(self.root, None)]  # Store tarversed node and whether the node is left or right child.
 		curr_node = self.root
+		# Find the node and record the traversed nodes from root.
 		while curr_node:
 			if node.value == curr_node.value:
 				break
@@ -87,19 +92,22 @@ class BST:
 			else:
 				curr_node = curr_node.right_child
 				traversed.append((curr_node, 'right'))
+		# If the node can not be find.
 		if not curr_node:
 			print('Input node is not in the tree...')
-			return
+			return None
+		# Keep poping from tarversed nodes while the node is right child.
 		ancestor = traversed.pop()
 		while ancestor[1] and ancestor[1] == 'right':
 			ancestor = traversed.pop()
+		# bugs hear
 		if not ancestor[1]:
 			print('Input node is the largest node in the tree....')
 		else:
 			return traversed.pop()[0]
 
 	def insert(self, value):
-		"""insert a node into the tree."""
+		"""Insert a node into the tree."""
 		to_insert = Node(value)
 		if not self.root:
 			self.root = to_insert
@@ -173,4 +181,3 @@ class BST:
 				parrent_node.left_child = left_child
 			else:
 				parrent_node.right_child = left_child
-
